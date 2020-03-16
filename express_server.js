@@ -59,7 +59,13 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.get('/u/:shortURL', (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+
+  if (longURL) {
+    res.redirect(longURL);
+  } else {
+    res.send('TinyURL Specified not found. Try again with a differnet short URL or create a new one.');
+
+  }
 });
 
 
