@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jeff-sexton/tinyapp/issues"
   },
-  "homepage": "https://github.com/jeff-sexton/tinyapp#readme"
+  "homepage": "https://github.com/jeff-sexton/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
