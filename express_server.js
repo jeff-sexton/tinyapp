@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 8080; // default port 8080
@@ -8,6 +9,7 @@ const PORT = 8080; // default port 8080
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(morgan('combined'));
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
