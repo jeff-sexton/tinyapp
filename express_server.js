@@ -28,6 +28,18 @@ const users = {
 
 };
 
+const checkForUserEmail = (emailAddress) => {
+  for (const user in users) {
+    if (users[user].email === emailAddress) {
+      return true;
+    }
+
+  }
+
+  return false;
+
+};
+
 
 const generateRandomString = () => {
   const possibleLetters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -50,8 +62,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const user = req.body.username;
-  res.cookie('username', user);
+  // const user = req.body.username;
+  // res.cookie('username', user);
   res.redirect('/urls');
 });
 
@@ -62,7 +74,7 @@ app.post("/logout", (req, res) => {
 
 app.get('/register', (req, res) => {
   let templateVars = {
-    username: req.cookies['username'],
+    user: users[req.cookies['user_id']],
   };
 
   res.render('usr_new', templateVars);
@@ -73,14 +85,25 @@ app.post('/register', (req, res) => {
   const password = req.body.password;
   const newID = generateRandomString();
 
-  users[newID] = {
-    id: newID,
-    email,
-    password,
-  };
-  console.log(users);
-  res.cookie('user_id', newID);
-  res.redirect('/urls');
+  if (email && password) {
+    if (checkForUserEmail(email)) {
+      res.statusCode = 400;
+      res.send('This email address is already in use!');
+    }
+
+    users[newID] = {
+      id: newID,
+      email,
+      password,
+    };
+    res.cookie('user_id', newID);
+    res.redirect('/urls');
+
+  } else {
+    res.statusCode = 400;
+    res.send('Please enter both a username and password!');
+  }
+
 });
 
 app.get('/urls.json', (req, res) => {
@@ -90,7 +113,7 @@ app.get('/urls.json', (req, res) => {
 app.get('/urls', (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies['username'],
+    user: users[req.cookies['user_id']],
   };
 
   res.render('urls_index', templateVars);
@@ -106,7 +129,7 @@ app.post('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
   let templateVars = {
-    username: req.cookies['username'],
+    user: users[req.cookies['user_id']],
   };
 
   res.render('urls_new', templateVars);
@@ -121,7 +144,7 @@ app.get('/urls/:shortURL', (req, res) => {
   let templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
-    username: req.cookies['username'],
+    user: users[req.cookies['user_id']],
   };
 
   res.render('urls_show', templateVars);
@@ -148,3 +171,4 @@ app.get('/u/:shortURL', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+
