@@ -61,6 +61,15 @@ app.get("/", (req, res) => {
   console.log('Cookies:', req.cookies);
 });
 
+app.get("/login", (req, res) => {
+  let templateVars = {
+    user: users[req.cookies['user_id']],
+  };
+  // const user = req.body.username;
+  // res.cookie('username', user);
+  res.render('usr_login', templateVars);
+});
+
 app.post("/login", (req, res) => {
   // const user = req.body.username;
   // res.cookie('username', user);
