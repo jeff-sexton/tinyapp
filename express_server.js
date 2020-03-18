@@ -179,13 +179,27 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-  let templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
-    user: users[req.cookies['user_id']],
-  };
 
-  res.render('urls_show', templateVars);
+  const userID = req.cookies['user_id'];
+  const userObj = users[userID];
+
+  if (userObj) {
+    if (userID === urlDatabase[req.params.shortURL].userID) {
+      let templateVars = {
+        shortURL: req.params.shortURL,
+        longURL: urlDatabase[req.params.shortURL].longURL,
+        user: userObj,
+      };
+    
+      res.render('urls_show', templateVars);
+    } else {
+      res.send('You do not have access to this TinyURL. Please log in as the correct user.');
+    }
+
+  } else {
+    res.redirect('/login');
+  }
+
 });
 
 app.post('/urls/:shortURL', (req, res) => {
