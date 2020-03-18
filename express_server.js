@@ -31,7 +31,7 @@ const users = {
 const checkForUserEmail = (emailAddress) => {
   for (const user in users) {
     if (users[user].email === emailAddress) {
-      return true;
+      return users[user].id;
     }
 
   }
@@ -65,20 +65,28 @@ app.get("/login", (req, res) => {
   let templateVars = {
     user: users[req.cookies['user_id']],
   };
-  // const user = req.body.username;
-  // res.cookie('username', user);
   res.render('usr_login', templateVars);
 });
 
 app.post("/login", (req, res) => {
-  // const user = req.body.username;
-  // res.cookie('username', user);
-  res.redirect('/urls');
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const userId = checkForUserEmail(email);
+
+  if (userId && users[userId].password === password) {
+
+    res.cookie('user_id', userId);
+    res.redirect('/urls');
+  } else {
+    res.statusCode = 403;
+    res.send('User details incorrect or missing');
+  }
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie('username');
-  res.redirect('/urls');
+  res.clearCookie('user_id');
+  res.redirect('/login');
 });
 
 app.get('/register', (req, res) => {
