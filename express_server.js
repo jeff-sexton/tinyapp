@@ -57,8 +57,7 @@ const generateRandomString = () => {
 };
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
-  console.log('Cookies:', req.cookies);
+  res.redirect('/login');
 });
 
 app.get("/login", (req, res) => {
@@ -169,7 +168,6 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.post('/urls/:shortURL', (req, res) => {
   urlDatabase[req.params.shortURL] = req.body.longURL;
-  console.log(req.body);
   res.redirect('/urls');
 });
 
