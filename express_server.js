@@ -41,15 +41,16 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  const user = req.cookies['username'];
   res.clearCookie('username');
   res.redirect('/urls');
 });
 
-app.post("/login", (req, res) => {
-  const user = req.body.username;
-  res.cookie('username', user);
-  res.redirect('/urls');
+app.get('/register', (req, res) => {
+  let templateVars = {
+    username: req.cookies['username'],
+  };
+
+  res.render('usr_new', templateVars);
 });
 
 app.get('/urls.json', (req, res) => {
