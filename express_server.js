@@ -174,8 +174,16 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  res.redirect('/urls');
+  const userID = req.cookies['user_id'];
+  const userObj = users[userID];
+
+  if (userObj && urlDatabase[req.params.shortURL].userID === userID) {
+    delete urlDatabase[req.params.shortURL];
+    res.redirect('/urls');
+  } else {
+    res.statusCode = 401;
+    res.send('You are not authorized to make that request');
+  }
 });
 
 app.get('/urls/:shortURL', (req, res) => {
@@ -203,8 +211,17 @@ app.get('/urls/:shortURL', (req, res) => {
 });
 
 app.post('/urls/:shortURL', (req, res) => {
-  urlDatabase[req.params.shortURL].longURL = req.body.longURL;
-  res.redirect('/urls');
+  const userID = req.cookies['user_id'];
+  const userObj = users[userID];
+
+  if (userObj && urlDatabase[req.params.shortURL].userID === userID) {
+    urlDatabase[req.params.shortURL].longURL = req.body.longURL;
+    res.redirect('/urls');
+
+  } else {
+    res.statusCode = 401;
+    res.send('You are not authorized to make that request');
+  }
 });
 
 app.get('/u/:shortURL', (req, res) => {
