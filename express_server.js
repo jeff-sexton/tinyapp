@@ -144,11 +144,16 @@ app.post('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  let templateVars = {
-    user: users[req.cookies['user_id']],
-  };
-
-  res.render('urls_new', templateVars);
+  const userObj = users[req.cookies['user_id']];
+  if (userObj) {
+    let templateVars = {
+      user: userObj,
+    };
+  
+    res.render('urls_new', templateVars);
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
