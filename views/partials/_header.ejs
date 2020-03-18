@@ -11,7 +11,6 @@
       </div>
     </div>
     <% if(user) { %>
-      
       <form class="form-inline" action='/logout' method='POST'>
         <p class='navbar-text nav-link' style='margin-bottom: 0;'>Welcome <%= user.email %>!</p>
         <div class='form-group'>
@@ -19,12 +18,10 @@
         </div>
       </form>
     <% } else { %>
-      <form class="form-inline" action='/login' method='POST'>
-        <div class='form-group'>
-          <input class="form-control" type="text" placeholder="Enter User Name"  name='username'></input>
-            <button type='submit' class="btn btn-outline">Log In</button>
-        </div>
-      </form>
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/register">Register</a>
+        <a class="nav-item nav-link" href="/login">Login</a>
+      </div>
     <% }  %> 
 
   </nav>
