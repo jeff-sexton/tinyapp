@@ -135,21 +135,21 @@ app.post('/register', (req, res) => {
 
 });
 
-app.get('/urls.json', (req, res) => {
-  res.json(urlDatabase);
-});
-
 app.get('/urls', (req, res) => {
   const userID = req.cookies['user_id'];
-  const userUrls = getUserURLs(urlDatabase, userID);
-  let templateVars = {
-    urls: userUrls,
-    user: users[userID],
-  };
+  const userObj = users[userID];
 
-  console.log();
-
-  res.render('urls_index', templateVars);
+  if (userObj) {
+    const userUrls = getUserURLs(urlDatabase, userID);
+    let templateVars = {
+      urls: userUrls,
+      user: userObj,
+    };
+  
+    res.render('urls_index', templateVars);
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.post('/urls', (req, res) => {
