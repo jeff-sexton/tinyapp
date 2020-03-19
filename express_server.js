@@ -4,7 +4,6 @@ const PORT = process.env.PORT || 8080;
 const KEYS = [process.env.KEYS] || ['key1'];
 
 const {
-  // checkAuthenticated,
   urlsForUser,
   getUserFromEmail,
   generateRandomString
@@ -33,6 +32,7 @@ app.use(cookieSession({
 
 app.use(morgan('combined'));
 
+//Middle ware to get and pass user object
 app.use((req, res, next) => {
   const user = req.session.user_id && users[req.session.user_id];
 

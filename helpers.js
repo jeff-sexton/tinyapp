@@ -1,11 +1,3 @@
-// const checkAuthenticated = (req, res, next) => {
-//   if (req.session.user_id && users[req.session.user_id]) {
-//     next();
-//   } else {
-//     res.redirect('/login');
-//   }
-// };
-
 const urlsForUser = (database, user) => {
   let userUrlObject = {};
   for (const url in database) {
@@ -44,7 +36,6 @@ const generateRandomString = () => {
 };
 
 module.exports = {
-  // checkAuthenticated,
   urlsForUser,
   getUserFromEmail,
   generateRandomString
