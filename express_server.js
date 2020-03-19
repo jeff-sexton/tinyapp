@@ -3,8 +3,6 @@ require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 const KEYS = process.env.KEYS || ['key1', 'key2'];
 
-console.log(KEYS);
-
 const {
   // checkAuthenticated,
   urlsForUser,
