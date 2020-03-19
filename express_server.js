@@ -10,6 +10,8 @@ const {
   generateRandomString
 } = require('./helpers');
 
+const { checkAuthenticated } = require('./middleWares');
+
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
@@ -31,13 +33,14 @@ app.use(cookieSession({
 
 app.use(morgan('combined'));
 
-const checkAuthenticated = (req, res, next) => {
-  if (req.session.user_id && users[req.session.user_id]) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-};
+app.use((req, res, next) => {
+  const user = req.session.user_id && users[req.session.user_id];
+
+  req.user = user;
+  next();
+});
+
+
 
 const urlDatabase = {
   "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID' },
