@@ -1,3 +1,10 @@
+// Get environment variables or set defaults
+require('dotenv').config();
+const PORT = process.env.PORT || 8080;
+const KEYS = process.env.KEYS || ['key1', 'key2'];
+
+console.log(KEYS);
+
 const {
   // checkAuthenticated,
   urlsForUser,
@@ -12,14 +19,13 @@ const bcrypt = require('bcrypt');
 const morgan = require('morgan');
 
 const app = express();
-const PORT = 8080; // default port 8080
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cookieSession({
   name: 'session',
-  keys: ['key1', 'key2'],
+  keys: KEYS,
 
   //Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 Hours
