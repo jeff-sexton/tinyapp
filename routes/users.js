@@ -13,6 +13,11 @@ const {
 const userRoutes = (userDb) => {
 
   router.get("/login", (req, res) => {
+    
+    if (req.user) {
+      res.redirect('/urls');
+    }
+
     let templateVars = {
       user: userDb[req.session.user_id],
     };
