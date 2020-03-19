@@ -41,10 +41,10 @@ const getUserURLs = (database, user) => {
   return userUrlObject;
 };
 
-const checkForUserEmail = (emailAddress) => {
-  for (const user in users) {
-    if (users[user].email === emailAddress) {
-      return users[user].id;
+const getUserFromEmail = (userDatabase, emailAddress) => {
+  for (const user in userDatabase) {
+    if (userDatabase[user].email === emailAddress) {
+      return userDatabase[user].id;
     }
 
   }
@@ -83,7 +83,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const userId = checkForUserEmail(email);
+  const userId = getUserFromEmail(users, email);
 
   if (userId && users[userId].password === password) {
 
@@ -113,7 +113,7 @@ app.post('/register', (req, res) => {
   const password = req.body.password;
   
   if (email && password) {
-    if (checkForUserEmail(email)) {
+    if (getUserFromEmail(users, email)) {
       res.statusCode = 400;
       res.send('This email address is already in use!');
     }
