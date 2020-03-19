@@ -50,7 +50,6 @@ app.use((req, res, next) => {
   const user = req.session.user_id && users[req.session.user_id];
   
   req.user = user;
-  console.log(user);
   next();
 });
 
