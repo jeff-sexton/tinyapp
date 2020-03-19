@@ -38,11 +38,11 @@ const checkAuthenticated = (req, res, next) => {
   }
 };
 
-const getUserURLs = (database, user) => {
+const urlsForUser = (database, user) => {
   let userUrlObject = {};
   for (const url in database) {
     if (database[url].userID === user) {
-      userUrlObject[url] = database[url];
+      userUrlObject[url] = database[url].longURL;
     }
 
   }
@@ -143,9 +143,14 @@ app.post('/register', (req, res) => {
 
 app.get('/urls', checkAuthenticated, (req, res) => {
   const userID = req.cookies['user_id'];
-  const userObj = users[userID];
 
-  const userUrls = getUserURLs(urlDatabase, userID);
+  const userUrls = urlsForUser(urlDatabase, userID);
+
+  if (Object.keys(userUrls).length === 0) {
+    res.redirect('/urls/new');
+  }
+
+  const userObj = users[userID];
 
   let templateVars = {
     urls: userUrls,
