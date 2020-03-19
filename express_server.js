@@ -179,7 +179,6 @@ app.get('/urls/new', checkAuthenticated, (req, res) => {
 
 app.post('/urls/:shortURL/delete', checkAuthenticated, (req, res) => {
   const userID = req.cookies['user_id'];
-  const userObj = users[userID];
 
   const urlUserID = urlDatabase[req.params.shortURL] && urlDatabase[req.params.shortURL].userID;
 
@@ -187,7 +186,6 @@ app.post('/urls/:shortURL/delete', checkAuthenticated, (req, res) => {
     delete urlDatabase[req.params.shortURL];
     res.redirect('/urls');
   } else {
-    res.statusCode = 401;
     res.status(401).send('You are not authorized to make that request');
   }
 });
