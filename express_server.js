@@ -48,15 +48,14 @@ const checkForUserEmail = (emailAddress) => {
     }
 
   }
-
-  return false;
-
 };
 
 
 const generateRandomString = () => {
   const possibleLetters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'x', 'z' ];
+    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'x', 'z' ]; /// add upper case, change to string
+
+    //uuid or guid -- research
 
   let stringLength = 6;
   let newString = '';
@@ -112,14 +111,14 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const newID = generateRandomString();
-
+  
   if (email && password) {
     if (checkForUserEmail(email)) {
       res.statusCode = 400;
       res.send('This email address is already in use!');
     }
-
+    
+    const newID = generateRandomString();
     users[newID] = {
       id: newID,
       email,
@@ -160,7 +159,17 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
-app.get('/urls/new', (req, res) => {
+// refactor to use middleware function
+
+const checkAuthenticated = (req, res, next) => {
+  if (req.cookies.user_id && users[req.cookies.user_id]) {
+    next();
+  } else {
+    res.direct('/login');
+  }
+};
+
+app.get('/urls/new',/* checkAuthenticated,*/ (req, res) => {
   const userObj = users[req.cookies['user_id']];
   if (userObj) {
     let templateVars = {
@@ -182,7 +191,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
     res.redirect('/urls');
   } else {
     res.statusCode = 401;
-    res.send('You are not authorized to make that request');
+    res.status(401).send('You are not authorized to make that request');
   }
 });
 
@@ -201,7 +210,7 @@ app.get('/urls/:shortURL', (req, res) => {
     
       res.render('urls_show', templateVars);
     } else {
-      res.send('You do not have access to this TinyURL. Please log in as the correct user.');
+      res.status(401).send('You do not have access to this TinyURL. Please log in as the correct user.');
     }
 
   } else {
@@ -213,9 +222,13 @@ app.get('/urls/:shortURL', (req, res) => {
 app.post('/urls/:shortURL', (req, res) => {
   const userID = req.cookies['user_id'];
   const userObj = users[userID];
+  const urlObj = urlDatabase[req.params.shortURL];
 
-  if (userObj && urlDatabase[req.params.shortURL].userID === userID) {
-    urlDatabase[req.params.shortURL].longURL = req.body.longURL;
+  const longUrl = req.body.longURL; // check for truthy!
+
+  // consider errors first
+  if (userObj && urlObj && urlObj.userID === userID) {
+    urlObj.longURL = req.body.longURL;
     res.redirect('/urls');
 
   } else {
@@ -225,7 +238,7 @@ app.post('/urls/:shortURL', (req, res) => {
 });
 
 app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL].longURL;
+  const longURL = urlDatabase[req.params.shortURL] && urlDatabase[req.params.shortURL].longURL; // shortcut for evaluating valid object before accessing property
 
   if (longURL) {
     res.redirect(longURL);
