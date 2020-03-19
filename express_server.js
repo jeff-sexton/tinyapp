@@ -1,7 +1,7 @@
 // Get environment variables or set defaults
 require('dotenv').config();
 const PORT = process.env.PORT || 8080;
-const KEYS = process.env.KEYS || ['key1', 'key2'];
+const KEYS = [process.env.KEYS] || ['key1'];
 
 const {
   // checkAuthenticated,
