@@ -83,8 +83,7 @@ app.post("/login", (req, res) => {
     req.session.user_id = userId;
     res.redirect('/urls');
   } else {
-    res.statusCode = 403;
-    res.send('User details incorrect or missing');
+    res.status(403).send('User details incorrect or missing');
   }
 });
 
@@ -121,8 +120,7 @@ app.post('/register', (req, res) => {
     res.redirect('/urls');
 
   } else {
-    res.statusCode = 400;
-    res.send('Please enter both a username and password!');
+    res.status(400).send('Please enter both a username and password!');
   }
 
 });
