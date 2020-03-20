@@ -16,6 +16,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - body-parser
 - cookie-session
 - dotenv
+- morgan
 
 ## Getting Started
 
