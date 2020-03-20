@@ -93,7 +93,7 @@ const urlRoutes = (urlDb) => {
     }
   });
   
-  router.post('/:shortURL', checkAuthenticated, (req, res) => {
+  router.put('/:shortURL', checkAuthenticated, (req, res) => {
   
     const userID = req.user.id;
     const urlObj = urlDb[req.params.shortURL];
