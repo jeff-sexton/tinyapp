@@ -12,6 +12,10 @@
 <%- include('partials/_header') %>
 
 <main style="margin: 1em;">
+  <% if(locals.error) { %>
+    <h3 style='color: red'>You need to be logged in to perform that action.</h3>
+  <% }  %> 
+
   <h3>Login User</h3>
   <form class="form-horizontal" action='/login' method='POST'>
     <div class="form-group mb-2">

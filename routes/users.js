@@ -13,13 +13,15 @@ const {
 const userRoutes = (userDb) => {
 
   router.get("/login", (req, res) => {
-    
+    const query = req.query; //error in query string will render an error message to the user
+
     if (req.user) {
       res.redirect('/urls');
     }
 
     let templateVars = {
       user: userDb[req.session.user_id],
+      error: query.error
     };
     res.render('usr_login', templateVars);
   });
