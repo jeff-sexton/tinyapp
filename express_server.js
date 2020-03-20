@@ -10,13 +10,16 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const morgan = require('morgan');
 
+const { generateRandomString } = require('./helpers');
+
+
 const { urlRoutes } = require('./routes/urls');
 const { userRoutes } = require('./routes/users');
 
 const urlDatabase = {
-  "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID' },
-  "eAicpF": { longURL: "http://www.github.com", userID: 'userRandomID' },
-  "9sm5xK": { longURL: "http://www.google.com", userID: 'user2RandomID'},
+  "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID', visits: [{visitorId: '', timeStamp: '',}], },
+  "eAicpF": { longURL: "http://www.github.com", userID: 'userRandomID', visits: [{visitorId: '', timeStamp: '',}], },
+  "9sm5xK": { longURL: "http://www.google.com", userID: 'user2RandomID', visits: [{visitorId: '', timeStamp: '',}], },
 };
 
 const users = {
@@ -70,9 +73,33 @@ app.use('/urls', urlRoutes(urlDatabase));
 
 // Handle redirection for any user
 app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL] && urlDatabase[req.params.shortURL].longURL;
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL] && urlDatabase[shortURL].longURL;
+
+ 
   
   if (longURL) {
+
+    const userId = req.session.user_id;
+    let visitorId = '';
+
+    if (userId) {
+      visitorId = userId;
+    } else {
+      visitorId = generateRandomString();
+      // eslint-disable-next-line camelcase
+      req.session.user_id = visitorId;
+    }
+
+    const timeStamp = Date();
+
+    urlDatabase[shortURL].visits.push({
+      visitorId,
+      timeStamp,
+    });
+
+    console.log(urlDatabase[shortURL].visits);
+
     res.redirect(longURL);
   } else {
     let templateVars = {
