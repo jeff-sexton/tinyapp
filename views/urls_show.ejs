@@ -11,10 +11,34 @@
   <%- include('./partials/_header') %>
 
   <div class="card text-center">
-      <div class="card-header"></div>
-      <div class="card-body">
+      <div class="card-header">
         <h5 class="card-title">TinyURL for: <%= longURL %></h5>
         <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
+      </div>
+      <div class="card-body">
+        <p>Total Visitors: <%= locals.totalVisits %> - Unique Visitors: <%= locals.uniqueVisits %></p>
+
+        <% if (locals.totalVisits) { %>
+
+        <div style="overflow: auto; width:50%; height:200px; margin: auto">
+          <table class='table'>
+            <thead>
+              <th scope='col'>Visitor Id</th>
+              <th scope='col'>Time Stamp</th>
+            </thead>
+            <tbody>
+              <% for (const visit of visits) { %>
+                <tr>
+                  <td><%= visit.visitorId %></td> 
+                  <td><%= visit.timeStamp %></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+      <% } %>
+
       </div>
     <div class="card-footer text-muted">
       <h3>Edit URL:</h3>
