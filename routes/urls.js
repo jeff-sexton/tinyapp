@@ -52,7 +52,7 @@ const urlRoutes = (urlDb) => {
     res.render('urls_new', templateVars);
   });
   
-  router.post('/:shortURL/delete', checkAuthenticated, (req, res) => {
+  router.delete('/:shortURL', checkAuthenticated, (req, res) => {
     const userID = req.user.id;
   
     const urlUserID = urlDb[req.params.shortURL] && urlDb[req.params.shortURL].userID;
