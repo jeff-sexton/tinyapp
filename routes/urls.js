@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const { checkAuthenticated } = require('../middleWares');
+
 const {
   urlsForUser,
-  generateRandomString
+  generateRandomString,
+  calculateVisitorData,
 } = require('../helpers');
 
 
@@ -38,7 +40,7 @@ const urlRoutes = (urlDb) => {
     }
   
     const shortURL = generateRandomString();
-    urlDb[shortURL] = { longURL, userID: req.session.user_id,};
+    urlDb[shortURL] = { longURL, userID: req.session.user_id, visits: [],};
   
     res.redirect(`/urls/${shortURL}`);
   });
@@ -73,14 +75,23 @@ const urlRoutes = (urlDb) => {
   router.get('/:shortURL', checkAuthenticated, (req, res) => {
   
     const userID = req.user.id;
+
+    const shortUrl = req.params.shortURL;
   
-    const urlUserID = urlDb[req.params.shortURL] && urlDb[req.params.shortURL].userID;
+    const urlUserID = urlDb[shortUrl] && urlDb[shortUrl].userID;
   
     if (urlUserID === userID) {
+
+      const visits = urlDb[shortUrl].visits;
+      const {totalVisits, uniqueVisits} = calculateVisitorData(visits);
+      
       let templateVars = {
-        shortURL: req.params.shortURL,
-        longURL: urlDb[req.params.shortURL].longURL,
+        shortURL: shortUrl,
+        longURL: urlDb[shortUrl].longURL,
         user: req.user,
+        visits,
+        totalVisits,
+        uniqueVisits,
       };
     
       res.render('urls_show', templateVars);
