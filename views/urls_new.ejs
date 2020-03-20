@@ -15,14 +15,24 @@
     <%- include('partials/_header') %>
 
     <main style="margin: 1em;">
-      <h3>Create TinyURL</h3>
-      <form class="form-inline" action="/urls" method="POST">
-        <div class="form-group mb-2">
-          <label for="longURL">Enter a URL:</label>
-          <input class="form-control" type="url" name="longURL" value="http://" style="width: 300px; margin: 1em">
-          <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="card text-center"> 
+        <div class="card-body">
+          <h4>Create TinyURL</h4>
+
         </div>
-      </form>
+        <div class="card-footer text-muted">
+          <form class="form-inline" action="/urls" method="POST">
+            <div class="form-group mb-2" style="width: 50%; margin: 0 auto">
+              <label for="longURL">Enter a URL:</label>
+              <input class="form-control" type="url" name="longURL" value="http://" style="width: 300px; margin: 1em">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+
+      
+      </div>
+
     </main>
       <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
