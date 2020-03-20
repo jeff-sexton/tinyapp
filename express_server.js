@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 8080;
 const KEYS = [process.env.KEYS] || ['key1'];
 
 const express = require("express");
+const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
@@ -33,6 +34,9 @@ const users = {
 };
 
 const app = express();
+
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'));
 
 app.set('view engine', 'ejs');
 app.use(morgan('combined'));

@@ -23,6 +23,7 @@ The project uses hashed passwords and user session to maintain user security. Da
 - cookie-session
 - dotenv
 - morgan
+- method-override
 
 ## Getting Started
 
