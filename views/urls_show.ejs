@@ -30,7 +30,7 @@
               <% for (const visit of visits) { %>
                 <tr>
                   <td><%= visit.visitorId %></td> 
-                  <td><%= visit.timeStamp %></td>
+                  <td><%= visit.timeStamp.toLocaleString() %></td>
                 </tr>
               <% } %>
             </tbody>

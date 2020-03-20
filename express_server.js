@@ -20,12 +20,12 @@ const { userRoutes } = require('./routes/users');
 
 const urlDatabase = {
   "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID', visits: [
-    {visitorId: 'userRandomID', timeStamp: 'Fri Mar 20 2020 05:15:18 GMT+0000 (UTC)'}
+    {visitorId: 'userRandomID', timeStamp: new Date(Date.UTC(2012, 11, 20, 3, 0, 0))}
   ], },
   "eAicpF": { longURL: "http://www.github.com", userID: 'userRandomID', visits: [
-    { visitorId: 'userRandomID', timeStamp: 'Fri Mar 20 2020 05:18:45 GMT+0000 (UTC)' },
-    { visitorId: 'vwOVfr', timeStamp: 'Fri Mar 20 2020 05:19:15 GMT+0000 (UTC)' },
-    { visitorId: 'vwOVfr', timeStamp: 'Fri Mar 20 2020 05:19:17 GMT+0000 (UTC)' }
+    { visitorId: 'userRandomID', timeStamp: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) },
+    { visitorId: 'vwOVfr', timeStamp: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) },
+    { visitorId: 'vwOVfr', timeStamp: new Date(Date.UTC(2012, 11, 20, 3, 0, 0)) }
   ], },
   "9sm5xK": { longURL: "http://www.google.com", userID: 'user2RandomID', visits: [], },
 };
@@ -102,7 +102,7 @@ app.get('/u/:shortURL', (req, res) => {
       req.session.user_id = visitorId;
     }
 
-    const timeStamp = Date();
+    const timeStamp = new Date();
 
     urlDatabase[shortURL].visits.push({
       visitorId,
