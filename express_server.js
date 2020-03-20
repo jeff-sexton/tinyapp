@@ -16,11 +16,22 @@ const { generateRandomString } = require('./helpers');
 const { urlRoutes } = require('./routes/urls');
 const { userRoutes } = require('./routes/users');
 
+// example form:  "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID', visits: [{visitorId: 'sddxds', timeStamp: 'Fri Mar 20 2020 05:15:18 GMT+0000 (UTC)',}], },
+
 const urlDatabase = {
-  "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID', visits: [{visitorId: '', timeStamp: '',}], },
-  "eAicpF": { longURL: "http://www.github.com", userID: 'userRandomID', visits: [{visitorId: '', timeStamp: '',}], },
-  "9sm5xK": { longURL: "http://www.google.com", userID: 'user2RandomID', visits: [{visitorId: '', timeStamp: '',}], },
+  "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: 'userRandomID', visits: [
+    {visitorId: 'userRandomID', timeStamp: 'Fri Mar 20 2020 05:15:18 GMT+0000 (UTC)'}
+  ], },
+  "eAicpF": { longURL: "http://www.github.com", userID: 'userRandomID', visits: [
+    { visitorId: 'userRandomID', timeStamp: 'Fri Mar 20 2020 05:18:45 GMT+0000 (UTC)' },
+    { visitorId: 'vwOVfr', timeStamp: 'Fri Mar 20 2020 05:19:15 GMT+0000 (UTC)' },
+    { visitorId: 'vwOVfr', timeStamp: 'Fri Mar 20 2020 05:19:17 GMT+0000 (UTC)' }
+  ], },
+  "9sm5xK": { longURL: "http://www.google.com", userID: 'user2RandomID', visits: [], },
 };
+
+
+
 
 const users = {
   'userRandomID': {
@@ -97,8 +108,6 @@ app.get('/u/:shortURL', (req, res) => {
       visitorId,
       timeStamp,
     });
-
-    console.log(urlDatabase[shortURL].visits);
 
     res.redirect(longURL);
   } else {
