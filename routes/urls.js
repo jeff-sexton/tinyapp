@@ -61,7 +61,12 @@ const urlRoutes = (urlDb) => {
       delete urlDb[req.params.shortURL];
       res.redirect('/urls');
     } else {
-      res.status(401).send('You are not authorized to make that request');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'You are not authorized to make that request.',
+      };
+      res.status(401).render('error', templateVars);
+      
     }
   });
   
@@ -80,7 +85,11 @@ const urlRoutes = (urlDb) => {
     
       res.render('urls_show', templateVars);
     } else {
-      res.status(401).send('You do not have access to this TinyURL. Please log in as the correct user.');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'You do not have access to this TinyURL. Please log in as the correct user.',
+      };
+      res.status(401).render('error', templateVars);
     }
   });
   
@@ -90,13 +99,23 @@ const urlRoutes = (urlDb) => {
     const urlObj = urlDb[req.params.shortURL];
   
     if (!urlObj) {
-      res.status(404).send('The TinyUrl specified does not exist.');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'The TinyUrl specified does not exist.',
+      };
+      res.status(404).render('error', templateVars);
+      
     }
     
     const longUrl = req.body.longURL;
   
     if (!longUrl) {
-      res.status(400).send('URL entered is not formatted correctly');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'URL entered is not formatted correctly.',
+      };
+      res.status(400).render('error', templateVars);
+      
     }
   
     if (urlObj.userID === userID) {
@@ -104,7 +123,11 @@ const urlRoutes = (urlDb) => {
       res.redirect('/urls');
   
     } else {
-      res.status(401).send('You are not authorized to make this request');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'You are not authorized to make this request.',
+      };
+      res.status(401).render('error', templateVars);
     }
   });
 

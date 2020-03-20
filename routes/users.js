@@ -16,12 +16,12 @@ const userRoutes = (userDb) => {
     const query = req.query; //error in query string will render an error message to the user
 
     if (req.user) {
-      res.redirect('/urls');
+      return res.redirect('/urls');
     }
 
     let templateVars = {
-      user: userDb[req.session.user_id],
-      error: query.error
+      user: req.user,
+      loginError: query.error
     };
     res.render('usr_login', templateVars);
   });
@@ -38,12 +38,18 @@ const userRoutes = (userDb) => {
       req.session.user_id = userId;
       res.redirect('/urls');
     } else {
-      res.status(403).send('User details incorrect or missing');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'User details incorrect or missing',
+      };
+      res.status(403).render('usr_login', templateVars);
     }
   });
   
   router.post("/logout", (req, res) => {
     req.session = null;
+
+    // Project requirements ask for this to redirect to /urls but /urls should give an error to a logged out user. Chose to redirect to /login instead
     res.redirect('/login');
   });
   
@@ -61,7 +67,11 @@ const userRoutes = (userDb) => {
     
     if (email && password) {
       if (getUserFromEmail(userDb, email)) {
-        res.status(400).send('This email address is already in use!');
+        let templateVars = {
+          user: req.user,
+          errorMsg: 'This email address is already in use',
+        };
+        return res.status(400).render('usr_new', templateVars);
       }
       
       const newID = generateRandomString();
@@ -76,7 +86,11 @@ const userRoutes = (userDb) => {
       res.redirect('/urls');
       
     } else {
-      res.status(400).send('Please enter both a username and password!');
+      let templateVars = {
+        user: req.user,
+        errorMsg: 'Please enter both a username and password.',
+      };
+      res.status(400).render('usr_new', templateVars);
     }
     
   });

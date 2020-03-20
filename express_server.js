@@ -70,7 +70,11 @@ app.get('/u/:shortURL', (req, res) => {
   if (longURL) {
     res.redirect(longURL);
   } else {
-    res.status(404).send('TinyURL Specified not found. Try again with a differnet short URL or create a new one.');
+    let templateVars = {
+      user: req.user,
+      errorMsg: 'TinyURL Specified not found!',
+    };
+    res.status(404).render('error', templateVars);
     
   }
 });
