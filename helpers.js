@@ -35,8 +35,24 @@ const generateRandomString = () => {
 
 };
 
+const calculateVisitorData = (visitsArray) => {
+  let totalVisits = 0;
+  let uniqueVisits = [];
+
+  for (const visit of visitsArray) {
+    totalVisits++;
+    if (!uniqueVisits.includes(visit.visitorId)) {
+      uniqueVisits.push(visit.visitorId);
+    }
+  }
+
+  return {totalVisits, uniqueVisits: uniqueVisits.length};
+
+};
+
 module.exports = {
   urlsForUser,
   getUserFromEmail,
-  generateRandomString
+  generateRandomString,
+  calculateVisitorData,
 };
