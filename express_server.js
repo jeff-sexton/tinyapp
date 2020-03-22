@@ -1,14 +1,7 @@
 // Get environment variables or set defaults
 require('dotenv').config();
 const PORT = process.env.PORT || 8080;
-const envKey = process.env.KEYS;
-
-const KEYS = [];
-if (envKey) {
-  KEYS.push(envKey);
-} else {
-  KEYS.push('defaultKeyValue - please set a secure KEYS string in the .env file');
-}
+const KEYS = process.env.KEYS ? [process.env.KEYS] : ['backup default key'];
 
 const express = require("express");
 const methodOverride = require('method-override');
@@ -129,6 +122,6 @@ app.get('/u/:shortURL', (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`TinyApp is listening on port ${PORT}!`);
 });
 
