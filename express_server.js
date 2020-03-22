@@ -1,7 +1,14 @@
 // Get environment variables or set defaults
 require('dotenv').config();
 const PORT = process.env.PORT || 8080;
-const KEYS = [process.env.KEYS] || ['key1'];
+const envKey = process.env.KEYS;
+
+const KEYS = [];
+if (envKey) {
+  KEYS.push(envKey);
+} else {
+  KEYS.push('defaultKeyValue - please set a secure KEYS string in the .env file');
+}
 
 const express = require("express");
 const methodOverride = require('method-override');
